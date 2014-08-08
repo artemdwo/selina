@@ -49,7 +49,8 @@ class GooglePage < Page
     elements.each do |el|
       if el.text == additional_search_term
         el.click
-        @@result = "The request '#{@@search_term}' was found on #{@@page_number} page"
+        sleep 3
+        @@result = "The request '#{@@search_term}' was found on #{@@page_number} page."
         @@found = true
       end
     end
@@ -60,6 +61,25 @@ class GooglePage < Page
     unless @@found
       @@search_term = additional_search_term
       next_page()
+    end
+  end
+
+  # method to check page title and return message corresponding to the result
+  # if requested page is found
+  # then check title
+  #   if requested term is a part of page title
+  #   then add success message
+  #   otherwise add error message
+  # otherwise add message that there is nothing to check.
+  def check_page(title)
+    if @@found
+      if @driver.title.include? title
+        @@result += ' Page verification: correct page!'
+      else
+        @@result += ' Page verification: wrong page!'
+      end
+    else
+      @@result += ' Page verification: nothing to do here!'
     end
   end
 
@@ -99,7 +119,7 @@ class GooglePage < Page
       sleep(2)
       search_in_results()
     else
-      @@result = "There is no results for the request: #{@@search_term}"
+      @@result = "There is no results for the request: #{@@search_term}."
     end
   end
 end
