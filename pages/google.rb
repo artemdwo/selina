@@ -119,7 +119,7 @@ class GooglePage < Page
       sleep(2)
       search_in_results()
     else
-      @@result = "There is no results for the request: #{@@search_term}."
+      @@result = "#{@@page_number} pages scanned. There is no results for the request: #{@@search_term}."
     end
   end
 end
